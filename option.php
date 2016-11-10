@@ -11,6 +11,6 @@ $UserMailToSendOperationReport='mail@exemple.ru'; //эмейл куда буду
 $SendOneTransactionMail = 1 ; //включить если требуется отправка по каждой транзакции
 $TypeFormat = 0 ; //0  = CSV , 1 - JSON
 $Delimiter = ',' ;
-
+$ConvertToCp1251 = 0 ; //если нужна кодировка в cp1251 у CSV выставить 1
 
 

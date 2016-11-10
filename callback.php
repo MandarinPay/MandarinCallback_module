@@ -21,7 +21,7 @@ if ($calc_sigh == true) {
         if($TypeFormat && $SendOneTransactionMail)
             $PostHandler->SendMailJson($UserMailToSendOperationReport);
         else{
-            $PostHandler->OneOperationCSV();
+            $PostHandler->OneOperationCSV($ConvertToCp1251);
             if($SendOneTransactionMail)
                 $PostHandler->SendMailCSV($UserMailToSendOperationReport,0);
 

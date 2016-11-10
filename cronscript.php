@@ -15,9 +15,8 @@ $ArayDayTrabsactions=$DatabaseDealer->GetCurrentDayTransactions();
 if($TypeFormat)
     $PostHandler->SendDayMailJson($UserMailToSendOperationReport,$ArayDayTrabsactions);
 else{
-    $PostHandler->DayArrayToCsv($ArayDayTrabsactions);
+    $PostHandler->DayArrayToCsv($ArayDayTrabsactions,$ConvertToCp1251);
     $PostHandler->SendMailCSV($UserMailToSendOperationReport,1);
-
 
 }
 

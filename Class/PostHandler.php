@@ -93,18 +93,18 @@ Class PostHandler
         mail($to, $subject, $body, $headers);
     }
 
-    public function DayArrayToCsv($ArrayDayTrabsactions)
+    public function DayArrayToCsv($ArrayDayTrabsactions, $ConvertToCp1251)
     {
         $File = fopen('csvarray.csv', 'w+');
-        echo "<pre>";
         $i = 0;
         foreach ($ArrayDayTrabsactions as $arrayTransaction) {
             if ($i == 0) {
                 foreach ($arrayTransaction as $key => $value)
-                    $RowTitle[] = $key;
+                    $RowTitle[] = $ConvertToCp1251 ? iconv('UTF-8', 'cp1251', $key) : $key;
                 fputcsv($File, $RowTitle, $this->delimentr);
                 $i++;
             }
+            $arrayTransaction = $ConvertToCp1251 ? iconv('UTF-8', 'cp1251', $arrayTransaction) : $arrayTransaction;
             fputcsv($File, $arrayTransaction, $this->delimentr);
         }
 
@@ -116,26 +116,33 @@ Class PostHandler
         return $ArrayTransactions;
     }
 
-    public function OneOperationCSV()
+    public function OneOperationCSV($ConvertToCp1251)
     {
         foreach ($this->CallbackArray as $NameRow => $ValueRow) {
-            $NameTableCol[] = $NameRow;
-            $ValueRowtable[] = $ValueRow;
+            $NameTableCol[] = $ConvertToCp1251 ? iconv('UTF-8', 'cp1251', $NameRow) : $NameRow;;
+            $ValueRowtable[] = $ConvertToCp1251 ? iconv('UTF-8', 'cp1251', $ValueRow) : $ValueRow;
         }
         $File = fopen('csvarray.csv', 'w+');
         fputcsv($File, $NameTableCol, $this->delimentr);
         fputcsv($File, $ValueRowtable, $this->delimentr);
+        fclose($File);
     }
 
     public function CostumExtraValue()
     {
         $ExtraArray = array();
-        for ($i = 0; $i < 10; $i++) {
-            $NameRow = isset($this->CallbackArray["customName{$i}"]) ? $this->CallbackArray["customName{$i}"] : "'---NO VALUE---'";
-            $NameValue = isset($this->CallbackArray["customValue{$i}"]) ? $this->CallbackArray["customValue{$i}"] : "'---NO VALUE---'";
-            $ExtraArray[] = array(0=>$NameRow,1 => $NameValue);
+        foreach ($this->CallbackArray as $NameRow => $ValueRow) {
+            if (preg_match("/^extra_/", $NameRow)) {
+                $ExtraArray[] = array(0 => $NameRow, 1 => $ValueRow);
+            }
+
+        }
+        //11 because  Database have 10 CoStumVaLueRow
+        for ($i = count($ExtraArray); $i < 11; $i++) {
+            $ExtraArray[] = array(0 => '--NO VALUE--', 1 => '--NO VALUE--');
         }
         return $ExtraArray;
-    }
 
+
+    }
 }
