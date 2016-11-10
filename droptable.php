@@ -1,3 +1,12 @@
 <?php
-$db = new PDO("mysql:dbname='nactacre_lk_mfo_ak';host='localhost'", 'nactacre_new_db', 'Dgn807HaZNEK');
-$db->exec("DROP TABLE *");
+
+require_once('option.php');
+
+
+$db = new PDO("mysql:dbname={$TableName};host=localhost", $TableUser, $TablePassword);
+$db->exec("DROP TABLE CardBinding");
+$db->exec("DROP TABLE TransactionUser");
+$result = $db->query("SHOW TABLES");
+$result = $result ->fetchAll(PDO::FETCH_COLUMN);
+print_r($result);
+
