@@ -47,7 +47,7 @@ Class PostHandler
 
     public function SendMailCSV($UserMail, $Day)
     {
-        $subject = "тема письма";
+        $subject = "MandarinCallback";
         $message = $Day ? "Transactions on the day" : " One Transaction";
         $filename = "csvarray.csv";
         $filepath = $filename;
